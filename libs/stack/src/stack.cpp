@@ -225,7 +225,6 @@ EXIT_CODES sprayPoisonOnData(stack_t *stack)
 
 #endif
 
-// TODO: change struct default values to macroses
 EXIT_CODES stackCtor(stack_t *stack, int stack_capacity)
 {
     // Error check

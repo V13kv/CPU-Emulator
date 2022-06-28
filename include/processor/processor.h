@@ -37,9 +37,6 @@ enum class PROCESSOR_EXIT_CODES
     FAIL_DURING_TAKING_OFFSET,
 };
 
-// TODO: RGBA struct for SFML: 4 char bytes and union (rgba, могу интерпретироват как int)
-
-// ******TODO: do flags
 struct cpu_t
 {
     stack_t stack                       = {};

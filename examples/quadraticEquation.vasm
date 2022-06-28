@@ -47,7 +47,7 @@ _start:
     pop [1]
     ; ---------------------
 
-    ; TODO: push not ASCII codes, but whole string (add support to assembler)
+    ; TODO: #1 push not ASCII codes, but whole string (add support to assembler) @V13kv
     ; a = 0, b = 0, c = 0 => solution is all real values
     push 10
     push 108

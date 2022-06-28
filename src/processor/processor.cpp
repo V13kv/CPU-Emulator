@@ -482,24 +482,8 @@ static EXIT_CODES cpuMoveValue(cpu_t *CPU, text_t *byteCode, double value)
     return EXIT_CODES::NO_ERRORS;
 }
 
-// FIXME: CHECK
-static EXIT_CODES cpuGOut(cpu_t *CPU, double indexToOut)
-{
-    // Error check
-    if (CPU == NULL)
-    {
-        PRINT_ERROR_TRACING_MESSAGE(EXIT_CODES::PASSED_OBJECT_IS_NULLPTR);
-        return EXIT_CODES::PASSED_OBJECT_IS_NULLPTR;
-    }
-
-    // Putchar from VRAM
-    printf("%c", CPU->VRAM[(int) indexToOut]);
-
-    return EXIT_CODES::NO_ERRORS;
-}
-
 #define OPDEF(unused, opcode, argc, code, ...)   \
-    case ((byte) opcode): { code }; break; //printf("mnemonics now: %s\n", #unused); 
+    case ((byte) opcode): { code }; break;
 
 static EXIT_CODES cpuExecuteCommand(cpu_t *CPU, text_t *byteCode)
 {
@@ -541,24 +525,14 @@ EXIT_CODES cpuExecuteBytecode(text_t *byteCode, cpu_t *CPU)
     }
     
     // Execution
-    // char s;
     while ((size_t) CPU->ip < byteCode->size)
     {
-        // cpuDump(CPU, byteCode);
         IS_ERROR(cpuExecuteCommand(CPU, byteCode))
         {
             PRINT_ERROR_TRACING_MESSAGE(PROCESSOR_EXIT_CODES::BAD_BYTECODE_PASSED);
             return EXIT_CODES::BAD_OBJECT_PASSED;
         }
-        // cpuDump(CPU, byteCode);
-
-        // printf("Command executed!\n");
-        // scanf("%c", &s);
     }
-
-    // TODO: IP increase problem
-    printf("WHILE END!\n");
-    printf("byteCode->size: %d\n", byteCode->size);
 
     return EXIT_CODES::NO_ERRORS;
 }

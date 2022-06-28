@@ -1,3 +1,5 @@
+// TODO: #2 Add Video memory && GPU commands @V13kv
+// TODO: #3 Add flags in order to easily determine state of machine after `cmp` command @V13kv
 #include "libs/text/include/text.h"
 #include "libs/colors/colors.h"
 

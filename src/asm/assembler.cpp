@@ -32,7 +32,6 @@ static EXIT_CODES fillUnprocCommandArgLabels(labels_t *unproc, labels_t *labels,
 
 static EXIT_CODES resetCommand(command_t *command);
 
-// ******TODO: Долгосрочная перспектива: система ошибок без exit'ов, всё возвращать в main
 EXIT_CODES assembly(text_t *code, char *outputFileName)
 {
     // Error check
@@ -66,9 +65,7 @@ EXIT_CODES assembly(text_t *code, char *outputFileName)
         IS_OK_W_EXIT(normalizeCodeLine(&code->lines[line]));
 
         if (code->lines[line].length != 0)
-        {
-            // printf("Wroking on line %s\n", code->lines[line].beginning);
-            
+        {      
             if (isLabel(code->lines[line].beginning, LABEL_LINE_FORMAT))
             {
                 IS_OK_W_EXIT(initLabel(code->lines[line].beginning, &labels, LABEL_LINE_FORMAT, globalOffset));
@@ -77,13 +74,9 @@ EXIT_CODES assembly(text_t *code, char *outputFileName)
             {
                 // Parse command
                 IS_OK_W_EXIT(parseCommand(&code->lines[line], &command, &unprocCommandArgLabels, globalOffset));
-                // printf(GREEN "\t[+] " RESET "Parsing\n");
 
                 IS_OK_W_EXIT(encodeCommand(&command));
-                // printf(GREEN "\t[+] " RESET "Encoding\n");
-
                 IS_OK_W_EXIT(exportEncodedCommand(&command, fs));
-                // printf(GREEN "\t[+] " RESET "Exporting\n");
                 
                 // Update global offset (for label's offset identification)
                 globalOffset += command.encoded.bytes;
@@ -179,7 +172,6 @@ static EXIT_CODES parseCommand(text_line_t *line, command_t *command, labels_t *
     IS_OK_W_EXIT(setCommandOpcode(command));
 
     // Check mnemonics for arguments existence
-    // TODO: normal arguments check, normal command opdefs format etc. (do it via adding ',' support for 2+ arguments)
     bool hasArgs = true;
     IS_OK_W_EXIT(hasArguments(command->mnemonics, &hasArgs));
 
@@ -213,7 +205,7 @@ static EXIT_CODES hasArguments(char *mnemonics, bool *hasArgs)
     {
         if (!strcmp(mnemonics, MNEMONICS_TABLE[instrIndx]))
         {
-            *hasArgs = !!ARGS_COUNT_TABLE[instrIndx];
+            *hasArgs = !!OPERATION_ARGS_COUNT_TABLE[instrIndx];
             return EXIT_CODES::NO_ERRORS;
         }
     }
@@ -323,7 +315,7 @@ static EXIT_CODES setCommandOpcode(command_t *command)
     {
         if (!strcmp(MNEMONICS_TABLE[mnemonics], command->mnemonics))
         {
-            command->opcode = OPCODES_TABLE[mnemonics];
+            command->opcode = OPERATION_OPCODES_TABLE[mnemonics];
             return EXIT_CODES::NO_ERRORS;
         }
     }
@@ -388,7 +380,7 @@ static EXIT_CODES parseCommandArguments(command_t *command, text_line_t *line, i
             IS_OK_W_EXIT(parseArgument(command, &argNumber, line, &argStart));
             if (argStart < argsEnd)
             {
-                // TODO: Support of -, etc (*additional all math ops as functions, like +(ax, 123) etc)
+                // TODO: #6 #5 Support of `-`, etc (*additional all math ops as functions, like +(ax, 123) etc) @V13kv
                 IS_OK_W_EXIT(getArgumentsMathOperation(line, &argStart, &op));
             }
         }
@@ -458,7 +450,7 @@ static EXIT_CODES checkRegisterForCorrectness(char *reg)
     return EXIT_CODES::NO_ERRORS;
 }
 
-// TODO: Support of -, etc (*additional all math ops as functions, like +(ax, 123) etc)
+// TODO: #6 Support of -, etc (*additional all math ops as functions, like +(ax, 123) etc)
 static EXIT_CODES getArgumentsMathOperation(text_line_t *line, int *argStart, char *mathOP)
 {
     // Error check

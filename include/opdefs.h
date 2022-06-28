@@ -177,7 +177,7 @@ OPDEF(halt, 255, 0, {
     EXIT(EXIT_SUCCESS);
 })
 
-// TODO: gpu commands
+// TODO: Add GPU commands
 // -------------------------------------------------GPU COMMANDS-------------------------------------------------
 
 // OPDEF(gOut, 18, 1, {

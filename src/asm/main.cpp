@@ -1,3 +1,5 @@
+// TODO: #4 Add support for multiple (0+) arguments support in commands (comma separated or smth) @V13kv
+
 #include "libs/text/include/text.h"
 #include "libs/colors/colors.h"
 
