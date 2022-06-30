@@ -12,7 +12,15 @@
 #endif
 
 #ifndef STACK_CANARY
-    #define STACK_CANARY    1
+    #define STACK_CANARY  1
+#endif
+
+#ifndef stackReallocCoefficient
+    #define stackReallocCoefficient 2
+#endif
+
+#ifndef POISON
+    #define POISON  -663
 #endif
 
 #if defined(STACK_HASH) && STACK_HASH == 1
@@ -101,17 +109,17 @@
             return EXIT_CODES::BAD_OBJECT_PASSED;
         }
 
-        // Calculation of stack hash
+        // Calculation of hash of stack structure
         long long int stack_hash_sum = 0;
         unsigned long long stack_total_bytes = sizeof(stack_t) - sizeof(stack->hashSum);
         IS_OK_WO_EXIT(calculateHashSum(stack, stack_total_bytes, &stack_hash_sum));
 
-        // Calculation of stack data hash
+        // Calculation of data hash of the stack structure 
         long long int stack_data_hash_sum = 0;
 
         long long int data_total_bytes = stack->capacity * sizeof(stackElem_t);
         #if defined(STACK_CANARY) && STACK_CANARY == 1
-            data_total_bytes += sizeof(stack->canaryLeft) + sizeof(stack->canaryRight);
+            data_total_bytes += ( sizeof(stack->canaryLeft) + sizeof(stack->canaryRight) );
 
             char *data_p = ((char *) stack->data) - sizeof(stack->canaryLeft);
         #else
@@ -217,7 +225,7 @@ EXIT_CODES sprayPoisonOnData(stack_t *stack)
         
         // Protection bytes for canary fields
         #if defined(STACK_CANARY) && STACK_CANARY == 1
-            (*add_bytes) += (LEFT_CANARY_SIZE + RIGHT_CANARY_SIZE);
+            (*add_bytes) += ( sizeof(stack->canaryLeft) + sizeof(stack->canaryRight) );
         #endif
 
         return EXIT_CODES::NO_ERRORS;
@@ -225,6 +233,7 @@ EXIT_CODES sprayPoisonOnData(stack_t *stack)
 
 #endif
 
+// TODO: change struct default values to macroses
 EXIT_CODES stackCtor(stack_t *stack, int stack_capacity)
 {
     // Error check
@@ -312,14 +321,14 @@ EXIT_CODES stackReallocation(stack_t *stack, REALLOC_MODES mode)
 
     int stack_capacity_increase = 0;
     #if defined(STACK_CANARY) && STACK_CANARY == 1
-        stack_capacity_increase += (LEFT_CANARY_SIZE + RIGHT_CANARY_SIZE);
+        stack_capacity_increase += ( sizeof(stack->canaryLeft) + sizeof(stack->canaryRight) );
     #endif
 
     #if defined(STACK_CANARY) && STACK_CANARY == 1
-        stackElem_t *temp = (stackElem_t *) realloc(stack->data - 1,  // because we want to free canaries (left and right)
-                                                    LEFT_CANARY_SIZE + new_capacity * sizeof(stackElem_t) + RIGHT_CANARY_SIZE);
+        stackElem_t *temp = (stackElem_t *) realloc( ((char *) stack->data) - sizeof(stack->canaryLeft),  // because we want to free canaries (left and right)
+                                                    sizeof(stack->canaryLeft) + new_capacity * sizeof(stackElem_t) + sizeof(stack->canaryRight));
     #else
-        stackElem_t *temp = (stackElem_t *) realloc(stack->data, new_capacity  * sizeof(stackElem_t));
+        stackElem_t *temp = (stackElem_t *) realloc(stack->data, new_capacity * sizeof(stackElem_t));
     #endif
     
     if (temp == NULL)
@@ -500,7 +509,7 @@ EXIT_CODES stackDtor(stack_t *stack)
     OBJECT_VERIFY(stack, stack);
 
     #if defined(STACK_CANARY) && STACK_CANARY == 1
-        free((int *) (((char *) stack->data) - sizeof(stack->canaryLeft)));
+        free( (((char *) stack->data) - sizeof(stack->canaryLeft)) );
     #else
         free(stack->data);
     #endif

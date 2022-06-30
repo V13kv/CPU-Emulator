@@ -47,6 +47,7 @@ ProcBuildDir = build/processor
 ProcSrcDir = src/processor
 
 StackBuildDir	= $(LibDir)/stack/build
+StackSrcDir		= $(LibDir)/stack/src
 HashBuildDir	= $(LibDir)/hash/build
 
 PROC_OBJS = $(ProcBuildDir)/main.o $(ProcBuildDir)/processor.o	\
@@ -65,7 +66,7 @@ $(ProcBuildDir)/processor.o: $(ProcSrcDir)/processor.cpp $(IncDir)/processor/pro
 
 
 #-------------------------------------------------LIBRARY COMPILATION------------------------------------------------------
-$(StackBuildDir)/stack.o:
+$(StackBuildDir)/stack.o: $(StackSrcDir)/stack.cpp
 	"$(MAKE)" -C "$(LibDir)/stack" makefile init all
 
 $(HashBuildDir)/hash.o:

@@ -3,14 +3,15 @@
 ;-------------------------------------------------------------------------------------------------------------------------
 
 
-_start:
+; TODO: No printing of outc (stack problem (maybe realloc problem))
+;_start:
     in  ; a
     in  ; b
     in  ; c
 
     pop ax  ; ax = c
     pop cx  ; cx = b
-    pop bx ; bx = a
+    pop bx  ; bx = a
 
     ; -------a == 0?-------
     push bx

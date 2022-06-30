@@ -12,10 +12,10 @@ CXXFLAGS = -g -std=c++17 -Wall -Wextra -Weffc++ -Wc++0x-compat -Wc++11-compat -W
 -Wshadow=global -Wsuggest-attribute=malloc -fcheck-new -fsized-deallocation -fstack-check -fstrict-overflow \
 -flto-odr-type-merging -fno-omit-frame-pointer -Wno-unknown-pragmas
 
-SrcDir = src
-IncDir = include
-LibDir = ../
-BuildDir = build
+SrcDir 		= src
+IncDir 		= include
+LibDir 		= ../
+BuildDir 	= build
 
 ColorsDir = $(LibDir)/colors
 DebugDir = $(LibDir)/debug
@@ -24,14 +24,15 @@ HashBuildDir = $(LibDir)/hash/build
 HashSrcDir = $(LibDir)/hash/src
 HashIncDir = $(LibDir)/hash/include
 
+OBJECTS = $(BuildDir)/stack.o $(HashBuildDir)/hash.o
 
-all: $(BuildDir)/stack.o $(HashBuildDir)/hash.o
+all: $(OBJECTS)
 
 $(BuildDir)/stack.o: $(SrcDir)/stack.cpp $(IncDir)/stack.h $(DebugDir)/debug.h $(IncDir)/settings.h $(LibDir)/hash/include/hash.h
 	g++ -I$(IncDir)/.. -I$(LibDir)/.. -c $(SrcDir)/stack.cpp $(CXXFLAGS) -o $(BuildDir)/stack.o
 
 $(HashBuildDir)/hash.o: 
-	"$(MAKE)" -C "$(LibDir)/hash/" makefile init all
+	"$(MAKE)" -C "./$(LibDir)/hash/" makefile init all
 
 .PHONY: init
 init:
