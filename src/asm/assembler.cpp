@@ -9,8 +9,6 @@
 #include "include/asm/settings.h"
 #include "include/constants.h"
 
-// TODO: 2 args support, strip command args
-
 static EXIT_CODES parseCommand(text_line_t *line, command_t *command, labels_t *unprocCommandArgLabels, const int globalOffset);
 static EXIT_CODES normalizeCodeLine(text_line_t *line);
 static EXIT_CODES hasArguments(char *mnemonics, bool *hasArgs);
@@ -49,11 +47,11 @@ EXIT_CODES assembly(text_t *code, char *outputFileName)
         return EXIT_CODES::BAD_STD_FUNC_RESULT;
     }
 
-    // General labels
+    // General labels (labels declaration)
     labels_t labels = {};
     IS_OK_W_EXIT(labelsCtor(&labels));
 
-    // Command argument labels
+    // Command argument labels (labels used in commands)
     labels_t unprocCommandArgLabels = {};
     IS_OK_W_EXIT(labelsCtor(&unprocCommandArgLabels));
 
@@ -333,10 +331,9 @@ static EXIT_CODES parseCommandArguments(command_t *command, text_line_t *line, i
         return EXIT_CODES::PASSED_OBJECT_IS_NULLPTR;
     }
 
-    // Check for special instructions (jmp, call)
+    // Check for special instructions (instructions that use labels as command args or it is label itself)
     bool isSpecInstr = true;
     IS_OK_W_EXIT(isSpecialInstruction(command, &isSpecInstr));
-
     if (isSpecInstr)
     {
         if (isLabel(&line->beginning[argsStart], LABEL_ARG_FORMAT))
@@ -354,7 +351,7 @@ static EXIT_CODES parseCommandArguments(command_t *command, text_line_t *line, i
     }
     else
     {
-        // Check for correct memory brackets
+        // If there are memory brackets, then syntax-check them for correctness
         if  ((line->beginning[argsStart] == '[' && line->beginning[argsEnd - 1] != ']') ||
              (line->beginning[argsStart] != '[' && line->beginning[argsEnd - 1] == ']'))
         {
@@ -411,6 +408,13 @@ static EXIT_CODES parseArgument(command_t *command, int *argNumber, text_line_t 
     }
     else
     {
+        // NOTE: doing support for string push (not just ASCII)
+        char buffer[MAX_ARGUMENT_STR_LENGTH] = { 0 };
+        if (sscanf(&line->beginning[*argStart], STRING_VALUE_FORMAT, buffer))
+        {
+            printf("buffer: %s\n", buffer);
+        }
+
         double imm = 0;
         if (sscanf(&line->beginning[*argStart], IMMEDIATE_VALUE_FORMAT, &imm, &newArgStart) == 1)
         {

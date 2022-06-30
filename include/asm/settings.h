@@ -7,6 +7,9 @@
 #define IMMEDIATE_VALUE_FORMAT          "%lf%n"
 #define EXCLUDE_COMMENTS_FORMAT         "%[^;]"
 
+// NOTE: maybe fix is needed
+#define STRING_VALUE_FORMAT             "\"%[^\"]\""
+
 const int MAX_MNEMONICS_STR_LENGTH        = 50;
 const int MAX_INSTRUCTION_ARGS_STR_LEN    = 50;
 const int MAX_ARGUMENTS_PER_COMMAND       = 2;

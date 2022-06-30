@@ -483,7 +483,7 @@ static EXIT_CODES cpuMoveValue(cpu_t *CPU, text_t *byteCode, double value)
 }
 
 #define OPDEF(unused, opcode, argc, code, ...)   \
-    case ((byte) opcode): { code }; break;
+    case ((byte) opcode): { code }; break; //printf("Mnemonics: %s\n", #unused);
 
 static EXIT_CODES cpuExecuteCommand(cpu_t *CPU, text_t *byteCode)
 {
@@ -525,13 +525,16 @@ EXIT_CODES cpuExecuteBytecode(text_t *byteCode, cpu_t *CPU)
     }
     
     // Execution
+    // char chr = 0;
     while ((size_t) CPU->ip < byteCode->size)
     {
+        // cpuDump(CPU, byteCode);
         IS_ERROR(cpuExecuteCommand(CPU, byteCode))
         {
             PRINT_ERROR_TRACING_MESSAGE(PROCESSOR_EXIT_CODES::BAD_BYTECODE_PASSED);
             return EXIT_CODES::BAD_OBJECT_PASSED;
         }
+        // scanf("%c", &chr);
     }
 
     return EXIT_CODES::NO_ERRORS;
