@@ -408,13 +408,6 @@ static EXIT_CODES parseArgument(command_t *command, int *argNumber, text_line_t 
     }
     else
     {
-        // NOTE: doing support for string push (not just ASCII)
-        char buffer[MAX_ARGUMENT_STR_LENGTH] = { 0 };
-        if (sscanf(&line->beginning[*argStart], STRING_VALUE_FORMAT, buffer))
-        {
-            printf("buffer: %s\n", buffer);
-        }
-
         double imm = 0;
         if (sscanf(&line->beginning[*argStart], IMMEDIATE_VALUE_FORMAT, &imm, &newArgStart) == 1)
         {
