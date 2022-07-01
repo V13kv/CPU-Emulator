@@ -4,7 +4,7 @@
 
 
 ; TODO: No printing of outc (stack problem (maybe realloc problem))
-;_start:
+_start:
     in  ; a
     in  ; b
     in  ; c
@@ -58,7 +58,7 @@
     push 32
     push 108
     push 108
-    push 97
+    push 65
 
     outc
     outc

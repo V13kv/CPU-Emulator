@@ -468,7 +468,7 @@ EXIT_CODES stackPop(stack_t *stack, stackElem_t *popTo)
                 fprintf(DEFAULT_ERROR_TRACING_STREAM, "\t\t\t [-1] = %d (CANARY)\n", *((int * ) (((char *) stack->data) - sizeof(stack->canaryLeft))));
             #endif
 
-            for (int element = 0; element < 8; ++element)
+            for (int element = 0; element < 12; ++element)
             {
                 if ( fabs((double) stack->data[element] - POISON) > __DBL_EPSILON__)
                 {

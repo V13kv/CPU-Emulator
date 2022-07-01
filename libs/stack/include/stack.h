@@ -144,7 +144,7 @@ EXIT_CODES sprayPoisonOnData(stack_t *stack);
  * @param stack_capacity 
  * @return EXIT_CODES 
  */
-EXIT_CODES stackCtor(stack_t *stack, int stack_capacity = 8);
+EXIT_CODES stackCtor(stack_t *stack, int stack_capacity = 12);
 
 /**
  * @brief Deconstruction of stack data structure

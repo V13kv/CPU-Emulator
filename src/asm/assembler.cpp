@@ -62,8 +62,9 @@ EXIT_CODES assembly(text_t *code, char *outputFileName)
     {
         IS_OK_W_EXIT(normalizeCodeLine(&code->lines[line]));
 
-        if (code->lines[line].length != 0)
-        {      
+        if (code->lines[line].length)
+        {    
+            // TODO: check for complex instruction, e.g. push <string> (separate into multiple push instructions)  
             if (isLabel(code->lines[line].beginning, LABEL_LINE_FORMAT))
             {
                 IS_OK_W_EXIT(initLabel(code->lines[line].beginning, &labels, LABEL_LINE_FORMAT, globalOffset));
@@ -132,7 +133,7 @@ static EXIT_CODES normalizeCodeLine(text_line_t *line)
     }
     else
     {
-        *w = 0;
+        *w = '\0';
     }
     line->length = strlen(line->beginning);
 
