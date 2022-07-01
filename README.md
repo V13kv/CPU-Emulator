@@ -34,5 +34,5 @@ make init; make asm proc
 ```
 
 ```
-./proc.exe <path_to_binary_file>
+./proc.exe <path_to_compiled_vasm_file>
 ```
