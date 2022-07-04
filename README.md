@@ -23,9 +23,16 @@ Coming soon...
 ## Implementation details
 Coming soon...
 
-## Compiling
+## Setting up
+**Clone the repository**
 ```
-make init; make asm proc
+$ git clone https://github.com/V13kv/CPU-Emulator
+$ cd CPU-Emulator
+```
+**Compiling**
+```
+$ make init
+$ make asm proc
 ```
 
 ## Running
