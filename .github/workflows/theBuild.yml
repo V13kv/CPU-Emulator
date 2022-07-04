@@ -25,7 +25,7 @@ jobs:
         ./asm.exe examples/quadraticEquation.vasm quadeq.bin
     - name: Run tests
       run: |
-        ./proc.exe fib.bin < 15
-        ./proc.exe quadeq.bin < "0 0 0"
+        echo "15" | ./proc.exe fib.bin
+        echo "0 0 0" | ./proc.exe quadeq.bin
         
       
