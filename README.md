@@ -1,4 +1,4 @@
-# CPU Emulator implementation
+# CPU Emulator implementation ![Build Status](https://github.com/V13kv/CPU-Emulator/workflows/BuildAndTest/badge.svg)
 Implementation of [`CPU`](https://en.wikipedia.org/wiki/Central_processing_unit) emulator and custom [`assembler`](https://en.wikipedia.org/wiki/Assembly_language#Assembler) for it.  
 Third task in MIPT in the first year of education.
 
