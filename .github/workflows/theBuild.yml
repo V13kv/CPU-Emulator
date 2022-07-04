@@ -18,4 +18,14 @@ jobs:
     - name: Setting up working directory
       run: make init
     - name: Compile files
-      run: make
+      run: make asm proc
+    - name: Compile tests
+    - run: |
+        ./asm.exe examples/fibonacciNumber.vasm fib.bin
+        ./asm.exe examples/quadraticEquation.vasm quadeq.bin
+    - name: Run tests
+    - run: |
+        ./proc.exe fib.bin
+        ./proc.exe quadeq.bin
+        
+      
