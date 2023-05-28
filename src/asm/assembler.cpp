@@ -30,6 +30,13 @@ static EXIT_CODES fillUnprocCommandArgLabels(labels_t *unproc, labels_t *labels,
 
 static EXIT_CODES resetCommand(command_t *command);
 
+/**
+ * @brief Main function that translates assembly source code file into bytecode file
+ * 
+ * @param code 
+ * @param outputFileName 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES assembly(text_t *code, char *outputFileName)
 {
     // Error check
@@ -95,6 +102,12 @@ EXIT_CODES assembly(text_t *code, char *outputFileName)
     return EXIT_CODES::NO_ERRORS;
 } 
 
+/**
+ * @brief Function that gets the actual string length of a command (i.e. without leading spaces and without comments)
+ * 
+ * @param line 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES normalizeCodeLine(text_line_t *line)
 {
     // Error check
@@ -140,6 +153,15 @@ static EXIT_CODES normalizeCodeLine(text_line_t *line)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that parses an entire command
+ * 
+ * @param line 
+ * @param command 
+ * @param unprocCommandArgLabels 
+ * @param globalOffset 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES parseCommand(text_line_t *line, command_t *command, labels_t *unprocCommandArgLabels, const int globalOffset)
 {
     // Error check
@@ -190,6 +212,13 @@ static EXIT_CODES parseCommand(text_line_t *line, command_t *command, labels_t *
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that determines whether the current command has any arguments (based on command mnemonics)
+ * 
+ * @param mnemonics 
+ * @param hasArgs 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES hasArguments(char *mnemonics, bool *hasArgs)
 {
     // Erorr check
@@ -263,6 +292,12 @@ static EXIT_CODES isSpecialInstruction(command_t *command, bool *isSpecInstr)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that checks current command mnemonics for existence
+ * 
+ * @param mnemonics 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES checkMnemonics(char *mnemonics)
 {
     // Error check
@@ -285,6 +320,13 @@ static EXIT_CODES checkMnemonics(char *mnemonics)
     return EXIT_CODES::BAD_OBJECT_PASSED;
 }
 
+/**
+ * @brief Set the Command Mnemonics in the `command` data structure
+ * 
+ * @param command 
+ * @param mnemonics 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES setCommandMnemonics(command_t *command, char *mnemonics)
 {
     // Error check
@@ -300,6 +342,12 @@ static EXIT_CODES setCommandMnemonics(command_t *command, char *mnemonics)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Set the Command Opcode in the `command` data structure
+ * 
+ * @param command 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES setCommandOpcode(command_t *command)
 {
     // Error check
@@ -323,6 +371,17 @@ static EXIT_CODES setCommandOpcode(command_t *command)
     return EXIT_CODES::BAD_OBJECT_PASSED;
 }
 
+/**
+ * @brief Function that parses all command arguments
+ * 
+ * @param command 
+ * @param line 
+ * @param argsStart 
+ * @param argsEnd 
+ * @param unprocCommandArgLabels 
+ * @param globalOffset 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES parseCommandArguments(command_t *command, text_line_t *line, int argsStart, int argsEnd, labels_t *unprocCommandArgLabels, const int globalOffset)
 {
     // Error check
@@ -379,7 +438,7 @@ static EXIT_CODES parseCommandArguments(command_t *command, text_line_t *line, i
             if (argStart < argsEnd)
             {
                 // TODO: #6 #5 Support of `-`, etc (*additional all math ops as functions, like +(ax, 123) etc) @V13kv
-                IS_OK_W_EXIT(getArgumentsMathOperation(line, &argStart, &op));
+                IS_OK_W_EXIT(getArgumentsMathOperation(line, &argStart, &op)); // FIXME: #12 possible bug, the result of this function is not used anywhere?!?!? (maybe it is needed to parse complex argument such as "1 + 2 - 3", or "1 * 2 * 4 - 3 + 1" and etc) @V13kv
             }
         }
         command->argumentsCount = argNumber;
@@ -388,6 +447,15 @@ static EXIT_CODES parseCommandArguments(command_t *command, text_line_t *line, i
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that parses one argument of a command
+ * 
+ * @param command 
+ * @param argNumber 
+ * @param line 
+ * @param argStart 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES parseArgument(command_t *command, int *argNumber, text_line_t *line, int *argStart)
 {
     // Error check
@@ -429,6 +497,12 @@ static EXIT_CODES parseArgument(command_t *command, int *argNumber, text_line_t 
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that check whether the register mentioned in a command argument exists
+ * 
+ * @param reg 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES checkRegisterForCorrectness(char *reg)
 {
     // Error check
@@ -477,7 +551,12 @@ static EXIT_CODES getArgumentsMathOperation(text_line_t *line, int *argStart, ch
     return EXIT_CODES::NO_ERRORS;
 }
 
-
+/**
+ * @brief Function that encodes an entire parsed command to the bytecode
+ * 
+ * @param command 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES encodeCommand(command_t *command)
 {
     // Error check
@@ -525,6 +604,13 @@ static EXIT_CODES encodeCommand(command_t *command)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that encodes the register (to the bytecode)
+ * 
+ * @param command 
+ * @param regStr 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES encodeRegisterArgument(command_t *command, char *regStr)
 {
     // Error check
@@ -546,6 +632,13 @@ static EXIT_CODES encodeRegisterArgument(command_t *command, char *regStr)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that encodes an immediate argument value (to the bytecode)
+ * 
+ * @param command 
+ * @param immStr 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES encodeImmediateArgument(command_t *command, char *immStr)
 {
     // Error check
@@ -561,6 +654,13 @@ static EXIT_CODES encodeImmediateArgument(command_t *command, char *immStr)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that exports one entirely encoded command to the file
+ * 
+ * @param command 
+ * @param fs 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES exportEncodedCommand(command_t *command, FILE *fs)
 {
     // Error check
@@ -576,7 +676,14 @@ static EXIT_CODES exportEncodedCommand(command_t *command, FILE *fs)
     return EXIT_CODES::NO_ERRORS;
 }
 
-
+/**
+ * @brief Function that fills offsets for all unprocessed labels (that were occured after the command referenced to them) in the export file
+ * 
+ * @param unproc 
+ * @param labels 
+ * @param fs 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES fillUnprocCommandArgLabels(labels_t *unproc, labels_t *labels, FILE *fs)
 {
     // Error check
@@ -603,7 +710,12 @@ static EXIT_CODES fillUnprocCommandArgLabels(labels_t *unproc, labels_t *labels,
     return EXIT_CODES::NO_ERRORS;
 }
 
-
+/**
+ * @brief Function that wipes all the previous data contained in `command` data structure
+ * 
+ * @param command 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES resetCommand(command_t *command)
 {
     // Erorr check
