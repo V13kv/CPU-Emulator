@@ -7,6 +7,12 @@
 #include "include/processor/processor.h"
 #include "include/processor/settings.h"
 
+/**
+ * @brief Function that constructs all internal components of an virtual CPU
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuCtor(cpu_t *CPU)
 {
     // Error check
@@ -34,6 +40,12 @@ EXIT_CODES cpuCtor(cpu_t *CPU)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that deconstructs all internal components of an virtual CPU
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuDtor(cpu_t *CPU)
 {
     // Error check
@@ -59,6 +71,13 @@ EXIT_CODES cpuDtor(cpu_t *CPU)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that dumps (prints) all the internal information of an virtual CPU at the moment it is called
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuDump(cpu_t *CPU, text_t *byteCode)
 {
     // Error check
@@ -93,6 +112,13 @@ EXIT_CODES cpuDump(cpu_t *CPU, text_t *byteCode)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function used to destruct all the allocated memory for the entire virtual CPU
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @param exitCode 
+ */
 static void cpuExit(cpu_t *CPU, text_t *byteCode, int exitCode)
 {
     // Error check
@@ -113,6 +139,14 @@ static void cpuExit(cpu_t *CPU, text_t *byteCode, int exitCode)
     exit(exitCode);
 }
 
+/**
+ * @brief Get the Register Value stored in it from bytecode
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @param result 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES _getRegisterValue(cpu_t *CPU, text_t *byteCode, double *result)
 {
     // Error check
@@ -129,6 +163,13 @@ static EXIT_CODES _getRegisterValue(cpu_t *CPU, text_t *byteCode, double *result
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function-wrapper of `_getRegisterValue` function (used for better error tracking)
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @return double 
+ */
 static double getRegisterValue(cpu_t *CPU, text_t *byteCode)
 {
     // Error check
@@ -149,6 +190,14 @@ static double getRegisterValue(cpu_t *CPU, text_t *byteCode)
     return result;
 }
 
+/**
+ * @brief Get the Immediate Value from the bytecode
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @param result 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES _getImmediateValue(cpu_t *CPU, text_t *byteCode, double *result)
 {
     // Error check
@@ -164,6 +213,13 @@ static EXIT_CODES _getImmediateValue(cpu_t *CPU, text_t *byteCode, double *resul
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Wrapper-function of `_getImmediateValue` function (used for better error tracking)
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @return double 
+ */
 static double getImmediateValue(cpu_t *CPU, text_t *byteCode)
 {
     // Error check
@@ -184,6 +240,15 @@ static double getImmediateValue(cpu_t *CPU, text_t *byteCode)
     return result;
 }
 
+/**
+ * @brief Function that evaluates the argument of a command
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @param argc 
+ * @param result 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES __cpuCountInternalExpressionValue(cpu_t *CPU, text_t *byteCode, size_t argc, double *result)
 {
     // Error check
@@ -224,6 +289,14 @@ static EXIT_CODES __cpuCountInternalExpressionValue(cpu_t *CPU, text_t *byteCode
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Funcntion that extracts the argument information (type, value and etc) from the bytecode
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @param result 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES _cpuGetBytecodeValue(cpu_t *CPU, text_t *byteCode, double *result)
 {
     // Error check
@@ -260,6 +333,13 @@ static EXIT_CODES _cpuGetBytecodeValue(cpu_t *CPU, text_t *byteCode, double *res
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function-wrapper of `_cpuGetBytecodeValue` function (used for better error tracking)
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @return double 
+ */
 static double cpuGetBytecodeValue(cpu_t *CPU, text_t *byteCode)
 {
     // Error check
@@ -282,6 +362,13 @@ static double cpuGetBytecodeValue(cpu_t *CPU, text_t *byteCode)
     return result;
 }
 
+/**
+ * @brief Function that 'pops' the value from the RAM (actually it is stack)
+ * 
+ * @param CPU 
+ * @param result 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES _cpuPop(cpu_t *CPU, double *result)
 {
     // Error check
@@ -301,6 +388,12 @@ static EXIT_CODES _cpuPop(cpu_t *CPU, double *result)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function-wrapper of `_cpuPop` function (used for better error tracking)
+ * 
+ * @param CPU 
+ * @return double 
+ */
 static double cpuPop(cpu_t *CPU)
 {
     // Error check
@@ -321,6 +414,13 @@ static double cpuPop(cpu_t *CPU)
     return result;
 }
 
+/**
+ * @brief Function-wrapper of `stackPush` function (used for better error tracking)
+ * 
+ * @param CPU 
+ * @param value 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES cpuPush(cpu_t *CPU, double value)
 {
     // Error check
@@ -340,6 +440,14 @@ static EXIT_CODES cpuPush(cpu_t *CPU, double value)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that extracts an offset (to the label) from the bytecode
+ * 
+ * @param CPU
+ * @param byteCode 
+ * @param result 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES _cpuGetBytecodeOffset(cpu_t *CPU, text_t *byteCode, offset *result)
 {
     // Error check
@@ -355,6 +463,13 @@ static EXIT_CODES _cpuGetBytecodeOffset(cpu_t *CPU, text_t *byteCode, offset *re
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function-wrapper of `_cpuGetBytecodeOffset` function (used for better error tracking)
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @return offset 
+ */
 static offset cpuGetBytecodeOffset(cpu_t *CPU, text_t *byteCode)
 {
     // Error check
@@ -375,6 +490,12 @@ static offset cpuGetBytecodeOffset(cpu_t *CPU, text_t *byteCode)
     return displacement;
 }
 
+/**
+ * @brief Function that outputs value (double) from the RAM (actually it is stack)
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES cpuOut(cpu_t *CPU)
 {
     // Error check
@@ -390,6 +511,12 @@ static EXIT_CODES cpuOut(cpu_t *CPU)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that reads value from the keyboard into RAM (actually it is stack)
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES cpuIn(cpu_t *CPU)
 {
     // Error check
@@ -413,6 +540,12 @@ static EXIT_CODES cpuIn(cpu_t *CPU)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that outputs a single character from the RAM (actually it is stack)
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES cpuOutc(cpu_t *CPU)
 {
     // Error check
@@ -427,6 +560,12 @@ static EXIT_CODES cpuOutc(cpu_t *CPU)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that does the 'mov' action
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES cpuMoveValue(cpu_t *CPU, text_t *byteCode, double value)
 {
     // Error check
@@ -485,6 +624,13 @@ static EXIT_CODES cpuMoveValue(cpu_t *CPU, text_t *byteCode, double value)
 #define OPDEF(unused, opcode, argc, code, ...)   \
     case ((byte) opcode): { code }; break; //printf("Mnemonics: %s\n", #unused);
 
+/**
+ * @brief Function that determines and executes one instruction from bytecode
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @return EXIT_CODES 
+ */
 static EXIT_CODES cpuExecuteCommand(cpu_t *CPU, text_t *byteCode)
 {
     // Error check
@@ -515,6 +661,13 @@ static EXIT_CODES cpuExecuteCommand(cpu_t *CPU, text_t *byteCode)
 
 #undef OPDEF
 
+/**
+ * @brief Main function that executes bytecode file
+ * 
+ * @param byteCode 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuExecuteBytecode(text_t *byteCode, cpu_t *CPU)
 {
     // Error check

@@ -12,6 +12,10 @@
 typedef unsigned char byte;
 typedef unsigned int offset;
 
+/**
+ * @brief An enum class that contains processor exit codes
+ * 
+ */
 enum class PROCESSOR_EXIT_CODES
 {
     UNKNOWN_OPCODE_BYTE,
@@ -37,6 +41,10 @@ enum class PROCESSOR_EXIT_CODES
     FAIL_DURING_TAKING_OFFSET,
 };
 
+/**
+ * @brief Structure that contains all processor information
+ * 
+ */
 struct cpu_t
 {
     stack_t stack                       = {};
@@ -46,10 +54,38 @@ struct cpu_t
     int ip                              = 0;
 };
 
+/**
+ * @brief Function that constructs all internal components of an virtual CPU
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuCtor(cpu_t *CPU);
+
+/**
+ * @brief Function that deconstructs all internal components of an virtual CPU
+ * 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuDtor(cpu_t *CPU);
+
+/**
+ * @brief Function that dumps (prints) all the internal information of an virtual CPU at the moment it is called
+ * 
+ * @param CPU 
+ * @param byteCode 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuDump(cpu_t *CPU, text_t *byteCode);
 
+/**
+ * @brief Main function that executes bytecode file
+ * 
+ * @param byteCode 
+ * @param CPU 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES cpuExecuteBytecode(text_t *byteCode, cpu_t *CPU);
 
 
