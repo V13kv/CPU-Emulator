@@ -1,3 +1,14 @@
+/**
+ * @file opdefs.h
+ * @author Vladislav Skvortsov (vladislavskvo@gmail.com)
+ * @brief File that is used to define new assembler commands via DSL (a.k.a microcode)
+ * @version 0.1
+ * @date 2023-05-28
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #ifndef REDEFINE_VALUES
     #define VAL     val
     #define VAL_1   val1
@@ -24,8 +35,9 @@
 #define MOVE_VALUE(value)           cpuMoveValue(CPU, byteCode, value)
 #define READ_STACK_VALUE(saveTo)    saveTo = POP(); PUSH(saveTo);
 
-// opMnemonics, opcode, argc, code
 
+// DSL format:
+// opMnemonics, opcode, argc (ARGument Count), code (microcode for the defined instruction)
 OPDEF(push, 0, 1, {
     VAL = GET_VALUE();
     PUSH(VAL);

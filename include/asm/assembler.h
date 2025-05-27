@@ -15,6 +15,10 @@ typedef unsigned char byte;
 typedef unsigned int offset;
 typedef unsigned int uint;
 
+/**
+ * @brief An enum class used to track the return function results of functions represented in `assembler` project
+ * 
+ */
 enum class ASM_EXIT_CODES
 {
     BAD_COMMAND_FORMAT,
@@ -27,12 +31,20 @@ enum class ASM_EXIT_CODES
     BAD_LABEL_FORMAT,
 };
 
+/**
+ * @brief Structure that represents the encoded command (its bytecode) 
+ * 
+ */
 struct encoded_command_t
 {
     byte byteData[MAX_ENCODED_COMMAND_LENGTH]   = {};
     int bytes                                   = 0;
 };
 
+/**
+ * @brief Structure that represents all the information of a command
+ * 
+ */
 struct command_t
 {
     char mnemonics[MAX_MNEMONICS_STR_LENGTH]                            = {};
@@ -57,6 +69,13 @@ struct command_t
 #define SET_MRI_REGISTER(commandMRI)                commandMRI |= 0b010
 #define SET_MRI_IMMEDIATE(commandMRI)               commandMRI |= 0b001 
 
+/**
+ * @brief Main function that translates assembly source code file into bytecode file
+ * 
+ * @param code 
+ * @param outputFileName 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES assembly(text_t *code, char *outputFile);
 
 #endif  // ASSEMBLER_H

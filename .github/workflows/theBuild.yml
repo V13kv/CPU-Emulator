@@ -1,0 +1,49 @@
+name: BuildAndTest
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+  - cron: "0 2 * * 1-5"
+
+jobs:
+  buildOnUbuntu:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setting up working directory
+      run: make init
+    - name: Compile files
+      run: make asm proc
+    - name: Compile tests
+      run: |
+        ./asm.exe examples/fibonacciNumber.vasm fib.bin
+        ./asm.exe examples/quadraticEquation.vasm quadeq.bin
+    - name: Run tests
+      run: |
+        echo "15" | ./proc.exe fib.bin
+        echo "0 0 0" | ./proc.exe quadeq.bin
+  
+  buildOnWindows:
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setting up working directory
+        run: make init
+      - name: Compile files
+        run: make asm proc
+      - name: Compile tests
+        run: |
+          ./asm.exe examples/fibonacciNumber.vasm fib.bin
+          ./asm.exe examples/quadraticEquation.vasm quadeq.bin
+      - name: Run tests
+        run: |
+          echo 15 | ./proc.exe fib.bin
+          echo 0 0 0 | ./proc.exe quadeq.bin
+        
+      

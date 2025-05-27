@@ -12,6 +12,9 @@ CXXFLAGS = -g -std=c++17 -Wall -Wextra -Weffc++ -Wc++0x-compat -Wc++11-compat -W
 -Wshadow=global -Wsuggest-attribute=malloc -fcheck-new -fsized-deallocation -fstack-check -fstrict-overflow \
 -flto-odr-type-merging -fno-omit-frame-pointer -Wno-unknown-pragmas
 
+all: init asm proc
+
+
 IncDir = include
 LibDir = libs
 BuildDir = build
@@ -31,14 +34,14 @@ asm: $(ASM_OBJECTS)
 	g++ $(ASM_OBJECTS) -o asm.exe
 
 $(AsmBuildDir)/main.o: $(AsmSrcDir)/main.cpp $(TextIncDir)/text.h $(LibDir)/colors/colors.h $(IncDir)/asm/assembler.h
-	g++ -I$(LibDir)/.. -I$(IncDir)/.. -c $(AsmSrcDir)/main.cpp $(CXXFLAGS) -o $(AsmBuildDir)/main.o
+	g++ -I . -c $(AsmSrcDir)/main.cpp $(CXXFLAGS) -o $(AsmBuildDir)/main.o
 
 $(AsmBuildDir)/labels.o: $(AsmSrcDir)/labels.cpp $(IncDir)/asm/labels.h
-	g++ -I$(IncDir)/.. -c $(AsmSrcDir)/labels.cpp $(CXXFLAGS) -o $(AsmBuildDir)/labels.o
+	g++ -I . -c $(AsmSrcDir)/labels.cpp $(CXXFLAGS) -o $(AsmBuildDir)/labels.o
 
 $(AsmBuildDir)/assembler.o:	$(AsmSrcDir)/assembler.cpp $(IncDir)/asm/assembler.h $(TextIncDir)/text.h $(IncDir)/asm/labels.h \
 							$(IncDir)/constants.h $(IncDir)/asm/settings.h $(LibDir)/debug/debug.h $(IncDir)/opdefs.h $(IncDir)/regdefs.h
-	g++ -I$(LibDir)/.. -I$(IncDir)/.. -c $(AsmSrcDir)/assembler.cpp $(CXXFLAGS) -o $(AsmBuildDir)/assembler.o
+	g++ -I . -c $(AsmSrcDir)/assembler.cpp $(CXXFLAGS) -o $(AsmBuildDir)/assembler.o
 #-------------------------------------------------------------------------------------------------------------------------
 
 
@@ -58,10 +61,10 @@ proc: $(PROC_OBJS)
 	g++ $(PROC_OBJS) -o proc.exe
 
 $(ProcBuildDir)/main.o: $(ProcSrcDir)/main.cpp $(IncDir)/processor/processor.h $(LibDir)/stack/include/stack.h $(TextIncDir)/text.h $(LibDir)/colors/colors.h $(LibDir)/debug/debug.h
-	g++ -I$(LibDir)/.. -I$(IncDir)/.. -c $(ProcSrcDir)/main.cpp $(CXXFLAGS) -o $(ProcBuildDir)/main.o
+	g++ -I . -c $(ProcSrcDir)/main.cpp $(CXXFLAGS) -o $(ProcBuildDir)/main.o
 
 $(ProcBuildDir)/processor.o: $(ProcSrcDir)/processor.cpp $(IncDir)/processor/processor.h $(IncDir)/processor/settings.h $(LibDir)/stack/include/stack.h $(TextIncDir)/text.h $(LibDir)/colors/colors.h $(LibDir)/debug/debug.h
-	g++ -I$(LibDir)/.. -I$(IncDir)/.. -c $(ProcSrcDir)/processor.cpp $(CXXFLAGS) -o $(ProcBuildDir)/processor.o
+	g++ -I . -c $(ProcSrcDir)/processor.cpp $(CXXFLAGS) -o $(ProcBuildDir)/processor.o
 #--------------------------------------------------------------------------------------------------------------------------
 
 
@@ -80,3 +83,8 @@ $(TextBuildDir)/text.o $(TextBuildDir)/file.o: $(TextSrcDir)/text.cpp $(TextSrcD
 .PHONY: init
 init:
 	mkdir -p $(BuildDir) $(AsmBuildDir) $(ProcBuildDir)
+
+
+.PHONY: clean
+clean:
+	rm -rf $(BuildDir) ./*.exe

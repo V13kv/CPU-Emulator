@@ -4,6 +4,12 @@
 
 #include "include/asm/labels.h"
 
+/**
+ * @brief Construction of `labels` data structure
+ * 
+ * @param labels 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES labelsCtor(labels_t *labels)
 {
     // Error check
@@ -26,6 +32,12 @@ EXIT_CODES labelsCtor(labels_t *labels)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Destruction of `labels` data structure
+ * 
+ * @param labels 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES labelsDtor(labels_t *labels)
 {
     // Error check
@@ -44,6 +56,12 @@ EXIT_CODES labelsDtor(labels_t *labels)
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that increases the number of labels that can be contained in the `labels` data structure
+ * 
+ * @param labels 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES expandLabelsArray(labels_t *labels)
 {
     // Error check
@@ -70,6 +88,16 @@ EXIT_CODES expandLabelsArray(labels_t *labels)
 }
 
 // ******TODO: label strip function
+
+/**
+ * @brief Function that initializes (constructs) one label and puts it into `labels` data structure
+ * 
+ * @param data 
+ * @param labels 
+ * @param LABEL_FORMAT 
+ * @param globalOffset 
+ * @return EXIT_CODES 
+ */
 EXIT_CODES initLabel(char *data, labels_t *labels, const char *LABEL_FORMAT, const int globalOffset)
 {
     // Error check
@@ -104,6 +132,14 @@ EXIT_CODES initLabel(char *data, labels_t *labels, const char *LABEL_FORMAT, con
     return EXIT_CODES::NO_ERRORS;
 }
 
+/**
+ * @brief Function that determines whether the current line is a label
+ * 
+ * @param data 
+ * @param LABEL_FORMAT 
+ * @return true 
+ * @return false 
+ */
 bool isLabel(char *data, const char *LABEL_FORMAT)
 {
     // Error check

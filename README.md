@@ -1,9 +1,12 @@
-# CPU Emulator implementation
+# CPU Emulator implementation ![Build Status](https://github.com/V13kv/CPU-Emulator/workflows/BuildAndTest/badge.svg)
 Implementation of [`CPU`](https://en.wikipedia.org/wiki/Central_processing_unit) emulator and custom [`assembler`](https://en.wikipedia.org/wiki/Assembly_language#Assembler) for it.  
 Third task in MIPT in the first year of education.
 
 ## Motivation
 The idea is to understand how CPU works, how CPU communicates with devices (input, output), how assembler works, how translation process is done, how CPU processes [`bytecode`](https://en.wikipedia.org/wiki/Bytecode), what is CPU [`microcode`](https://en.wikipedia.org/wiki/Microcode) and how it is implemented and some other intricacies of CPU, assembler.
+
+## Documentation
+You can see the user documentation [`here`](https://docs.google.com/document/d/1youW9-Raz-lGzc0pJ37jc7rNF6vHhlz0xsxcjXyCMYY/edit?usp=sharing) and developer documentation [`here`](https://docs.google.com/document/d/1q9ce8neP75xqnBPQkJJ05GUwjR5-Uvag2BscOHG7MAw/edit?usp=share_link).
 
 ## What does this project have?
 This project has two main parts:  
@@ -23,9 +26,16 @@ Coming soon...
 ## Implementation details
 Coming soon...
 
-## Compiling
+## Setting up
+**Clone the repository**
 ```
-make init; make asm proc
+git clone https://github.com/V13kv/CPU-Emulator;
+cd CPU-Emulator
+```
+**Compiling**
+```
+make init;
+make asm proc
 ```
 
 ## Running
@@ -34,5 +44,5 @@ make init; make asm proc
 ```
 
 ```
-./proc.exe <path_to_binary_file>
+./proc.exe <path_to_compiled_vasm_file>
 ```
